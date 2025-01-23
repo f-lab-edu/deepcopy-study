@@ -20,5 +20,34 @@ npx jest --init
 src폴더 생성 및 테스트 폴더 생성
 
 #package.json 스크립트 추가
+```typescript
+ "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
 ```
+
+#npm install -D ts-node
+```
+
+
+## 초기 셋팅 중 오류 발생
+- 오류메시지
+```typescript
+/Users/sunny/f-lab/deepcopy-study/src/test/deepCopy.test.ts:1
+   ({"Object.<anonymous>":function(module,exports,require,dirname,filename,jest){import deepCopy from "../deepCopy";
+                                                                                     ^^^^^^
+   SyntaxError: Cannot use import statement outside a module
+     at Runtime.createScriptFromCode (node_modules/jest-runtime/build/index.js:1505:14)
+```
+- 원인 : Jest가 ES모듈구문(import,export)를 처리하지 못해서 발생한 문제
+- 해결 :
+  - package.json에 "type": "module" 추가하기
+  - jest.config.ts 파일에 useESM관련 기능 추가하기 (Jest의 기본설정이 CJS모듈 시스템을 활용하고있어서 ESM설정을 해줘야함)
+
+
+  
+
 
