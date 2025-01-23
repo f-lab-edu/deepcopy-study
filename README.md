@@ -46,5 +46,7 @@ src폴더 생성 및 테스트 폴더 생성
 
 
 
-
-
+## 테스트 방법
+```typescript
+npm test
+```
