@@ -1,3 +1,5 @@
 export const deepCopy = (value: Object) => {
-  return value;
+  const deepCopyValue = JSON.parse(JSON.stringify(value));
+
+  return deepCopyValue;
 };
