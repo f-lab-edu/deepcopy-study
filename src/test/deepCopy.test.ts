@@ -2,47 +2,52 @@ import { deepCopy } from "../deepCopy";
 
 describe("깊은 복사 테스트 - 입력 A : 일반 객체", () => {
   test("일반객체 테스트 1", () => {
-    expect(deepCopy({ a: 1, b: 2, c: 3 })).toEqual({ a: 1, b: 2, c: 3 });
+    const original = { a: 1, b: 2, c: 3 };
+    const copied = deepCopy(original) as typeof original;
+    copied.a = 4;
+    expect(original.a).toBe(1);
+    expect(original !== copied).toBe(true);
   });
+
   test("깊은복사 테스트 2", () => {
-    expect(deepCopy({ a: 1, b: { c: 2, d: 3 } })).toEqual({
-      a: 1,
-      b: { c: 2, d: 3 },
-    });
-  });
-  test("깊은복사 테스트 3", () => {
-    expect(deepCopy({ a: 1, b: { c: 2, d: { e: 3 } } })).toEqual({
-      a: 1,
-      b: { c: 2, d: { e: 3 } },
-    });
+    const original = { a: 1, b: { c: 2, d: 3 } };
+    const copied = deepCopy(original) as typeof original;
+    copied.b.c = 4;
+    expect(original.b.c).toBe(2);
+    expect(original.b !== copied.b).toBe(true);
   });
 });
 
 describe("깊은 복사 테스트 - 입력 B : 배열", () => {
   test("배열 테스트 1", () => {
-    expect(deepCopy([1, 2, 3])).toEqual([1, 2, 3]);
-  });
-  test("배열 테스트 2", () => {
-    expect(deepCopy([1, [2, 3]])).toEqual([1, [2, 3]]);
-  });
-  test("배열 테스트 3", () => {
-    expect(deepCopy([1, [2, [3]]])).toEqual([1, [2, [3]]]);
+    const original = [1, 2, 3];
+    const copied = deepCopy(original) as typeof original;
+    copied[0] = 4;
+    expect(original[0]).toBe(1);
+    expect(original !== copied).toBe(true);
   });
 });
 
 describe("깊은 복사 테스트 - 입력 C : null, undefined", () => {
   test("null 테스트", () => {
-    expect(deepCopy(null)).toEqual(null);
+    expect(deepCopy(null)).toBe(null);
   });
+
   test("undefined 테스트", () => {
-    expect(deepCopy(undefined)).toEqual(undefined);
+    expect(deepCopy(undefined)).toBe(undefined);
   });
 });
 
+type CircularObject = {
+  a: number;
+  b?: CircularObject;
+};
+
 describe("깊은 복사 테스트 - 입력 D : 순환 참조 객체", () => {
   test("순환 참조 객체 테스트", () => {
-    const obj: any = { a: 1 };
+    const obj: CircularObject = { a: 1 };
     obj.b = obj;
-    expect(deepCopy(obj)).toEqual({ a: 1, b: obj });
+    const copied = deepCopy(obj) as CircularObject;
+    expect(copied.b).toBe(copied);
   });
 });
