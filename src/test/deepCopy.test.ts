@@ -26,6 +26,14 @@ describe("깊은 복사 테스트 - 입력 B : 배열", () => {
     expect(original[0]).toBe(1);
     expect(original !== copied).toBe(true);
   });
+
+  test("배열 테스트 2", () => {
+    const original: number[][] = [1, [2, 3]] as number[][];
+    const copied = deepCopy(original) as number[][];
+    (copied[1] as number[])[0] = 4;
+    expect(original[1][0]).toBe(2);
+    expect(original[1] !== copied[1]).toBe(true);
+  });
 });
 
 describe("깊은 복사 테스트 - 입력 C : null, undefined", () => {
