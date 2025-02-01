@@ -4,11 +4,23 @@ export const deepCopy = <T>(value: T, cache = new WeakMap()): T => {
     return value;
   }
 
+  if (value instanceof Date) {
+    const copyDate = new Date(value.getTime());
+    Object.setPrototypeOf(copyDate, Object.getPrototypeOf(value));
+    return copyDate as T;
+  }
+
+  if (value instanceof RegExp) {
+    const copyRegExp = new RegExp(value.source, value.flags);
+    copyRegExp.lastIndex = value.lastIndex;
+    return copyRegExp as T;
+  }
+
   if (cache.has(value)) {
     return cache.get(value);
   }
 
-  let deepCopyValue = {} as T;
+  const deepCopyValue = {} as T;
 
   cache.set(value, deepCopyValue);
 

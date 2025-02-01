@@ -54,13 +54,18 @@ describe("deepCopy 함수 테스트", () => {
       test("Date", () => {
         const date = new Date();
         const copied = deepCopy(date);
-        expect(copied).toEqual(date);
+        expect(copied instanceof Date).toBe(true);
+        expect(copied.getTime()).toBe(date.getTime());
       });
 
       test("정규표현식", () => {
-        const reg = /test/g;
+        const reg = /test/gi;
+        reg.lastIndex = 2;
         const copied = deepCopy(reg);
-        expect(copied).toEqual(reg);
+        expect(copied instanceof RegExp).toBe(true);
+        expect(copied.source).toBe(reg.source);
+        expect(copied.flags).toBe(reg.flags);
+        expect(copied.lastIndex).toBe(reg.lastIndex);
       });
     });
   });
@@ -109,18 +114,22 @@ describe("deepCopy 함수 테스트", () => {
     describe("특수 타입 테스트", () => {
       test("Date", () => {
         const date = new Date();
+        const originalTime = date.getTime();
         const copied = deepCopy(date);
         copied.setDate(4);
-        expect(date).not.toEqual(copied);
+        expect(date.getTime()).toBe(originalTime);
+        expect(copied.getTime()).not.toBe(originalTime);
       });
 
       test("정규표현식", () => {
-        const reg = /test/g;
+        const reg = /test/gi;
+        reg.lastIndex = 2;
         const copied = deepCopy(reg);
+        const originalLastIndex = reg.lastIndex;
         copied.lastIndex = 4;
-        expect(reg).not.toEqual(copied);
+        expect(reg.lastIndex).toBe(originalLastIndex);
+        expect(copied.lastIndex).toBe(4);
       });
-
       test("null", () => {
         const copied = deepCopy(null);
         expect(copied).toEqual(null);
