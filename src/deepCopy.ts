@@ -20,9 +20,9 @@ export const deepCopy = <T>(value: T, cache = new WeakMap()): T => {
     return cache.get(value);
   }
 
-  const deepCopyValue = {} as T;
+  const result = {};
 
-  cache.set(value, deepCopyValue);
+  cache.set(value, result);
 
   if (Array.isArray(value)) {
     return value.map((v) => deepCopy(v, cache)) as T;
@@ -33,9 +33,9 @@ export const deepCopy = <T>(value: T, cache = new WeakMap()): T => {
   //   key가 없다면 value를 그대로 대입
   for (const key in value) {
     if (value.hasOwnProperty(key)) {
-      (deepCopyValue as T)[key] = deepCopy((value as T)[key], cache);
+      (result as T)[key] = deepCopy((value as T)[key], cache);
     }
   }
 
-  return deepCopyValue;
+  return result as T;
 };
