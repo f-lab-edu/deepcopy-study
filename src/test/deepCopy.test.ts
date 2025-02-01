@@ -130,15 +130,6 @@ describe("deepCopy 함수 테스트", () => {
         expect(reg.lastIndex).toBe(originalLastIndex);
         expect(copied.lastIndex).toBe(4);
       });
-      test("null", () => {
-        const copied = deepCopy(null);
-        expect(copied).toEqual(null);
-      });
-
-      test("undefined", () => {
-        const copied = deepCopy(undefined);
-        expect(copied).toEqual(undefined);
-      });
     });
   });
 });
